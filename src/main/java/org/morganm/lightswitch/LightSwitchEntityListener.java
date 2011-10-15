@@ -11,6 +11,7 @@ import org.bukkit.event.entity.EntityListener;
  *
  */
 public class LightSwitchEntityListener extends EntityListener {
+	@SuppressWarnings("unused")
 	private LightSwitchPlugin plugin;
 	private LightSwitchManager manager;
 	

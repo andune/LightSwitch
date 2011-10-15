@@ -9,6 +9,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.morganm.lightswitch.entity.Circuit;
+import org.morganm.lightswitch.entity.CircuitSwitch;
 
 /**
  * @author morganm
@@ -29,10 +30,15 @@ public class LightSwitchPlayerListener extends PlayerListener {
 			return;
 		
 		Player p = event.getPlayer();
+		Block b = event.getClickedBlock();
 		
-		if( event.getAction() == Action.RIGHT_CLICK_BLOCK ) {
-			Block b = event.getClickedBlock();
-			
+		if( event.getAction() == Action.LEFT_CLICK_BLOCK ) {
+			CircuitSwitch circuitSwitch = manager.getCircuitSwitchByLocation(b.getLocation());
+			if( circuitSwitch != null ) {
+				manager.toggleCircuit(circuitSwitch.getCircuit());
+			}
+		}
+		else if( event.getAction() == Action.RIGHT_CLICK_BLOCK ) {
 			if( manager.isInDeleteCircuitMode(p) ) {
 				if( manager.isCircuitLocation(b.getLocation()) ) {
 					manager.deleteEntity(b.getLocation());

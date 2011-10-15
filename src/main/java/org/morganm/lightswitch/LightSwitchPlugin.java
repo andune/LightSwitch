@@ -181,6 +181,7 @@ public class LightSwitchPlugin extends JavaPlugin implements JavaConfigPlugin, J
         classList.add(org.morganm.lightswitch.entity.Circuit.class);
         classList.add(org.morganm.lightswitch.entity.CircuitEntity.class);
         classList.add(org.morganm.lightswitch.entity.CircuitSign.class);
+        classList.add(org.morganm.lightswitch.entity.CircuitSwitch.class);
         classList.add(org.morganm.lightswitch.entity.Version.class);
         return classList;
     }

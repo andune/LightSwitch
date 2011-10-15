@@ -8,9 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.block.BlockRedstoneEvent;
 import org.morganm.lightswitch.entity.Circuit;
-import org.morganm.lightswitch.entity.CircuitSwitch;
 
 /**
  * @author morganm
@@ -51,6 +49,9 @@ public class LightSwitchBlockListener extends BlockListener {
 		}
 	}
 	
+	/*  not used for now, perhaps use this with signs to allow external redstone inputs to
+	 * control lighting
+	 * 
 	@Override
 	public void onBlockRedstoneChange(BlockRedstoneEvent event) {
 		Block b = event.getBlock();
@@ -71,6 +72,7 @@ public class LightSwitchBlockListener extends BlockListener {
 		
 		// TODO: if implementing signs, detect changes to sign as a switch event
 	}
+	 */
 	
 	@Override
 	public void onBlockBreak(BlockBreakEvent event) {
@@ -96,4 +98,6 @@ public class LightSwitchBlockListener extends BlockListener {
 		}
 		*/
 	}
+	
+	
 }

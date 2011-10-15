@@ -41,9 +41,12 @@ public class CircuitEntity {
 		Location l = getLocation();
 		World w = l.getWorld();
 		int typeId = w.getBlockTypeIdAt(l);
-		int newTypeId = 0; // TODO: get TypeId
+		int newTypeId = LightSwitchPlugin.getInstance().getManager().getToggledTypeId(typeId);
 		
-		if( typeId != newTypeId ) {
+		if( typeId == 22 ) {	// deal with Netherrack special
+			// TODO: toggle fire state
+		}
+		else if( typeId != newTypeId ) {
 			l.getBlock().setTypeId(newTypeId);
 		}
 	}
@@ -53,8 +56,10 @@ public class CircuitEntity {
 	 * @return
 	 */
 	public boolean getState() {
-		// TODO: do something
-		return false;
+		Location l = getLocation();
+		World w = l.getWorld();
+		int typeId = w.getBlockTypeIdAt(l);
+		return LightSwitchPlugin.getInstance().getManager().getOnState(typeId);
 	}
 	
 	public Location getLocation() {
