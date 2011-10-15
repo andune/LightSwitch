@@ -33,16 +33,22 @@ public interface Storage {
 	
 	public Circuit getCircuitById(int circuitId);
 	public Circuit getCircuitByName(String circuitName);
-	public void writeCircuit(Circuit circuit); 
+	public void writeCircuit(Circuit circuit);
+	public void deleteCircuit(Circuit circuit);
+	public Set<Circuit> getAllCircuits();
 	
 	public CircuitSign getCircuitSignByCircuitId(int circuitId);
 	public void writeCircuitSign(CircuitSign circuitSign);
 	
 	public Set<CircuitEntity> getCircuitEntitiesByCircuitId(int circuitId);
 	public void writeCircuitEntity(CircuitEntity circuitEntity);
+	public void deleteCircuitEntity(CircuitEntity circuitEntity);
+	public Set<CircuitEntity> getAllCircuitEntities();
 	
 	public CircuitSwitch getCircuitSwitchByCircuitId(int circuitId);
 	public CircuitSwitch getCircuitSwitchByLocation(Location l);
 	public Set<CircuitSwitch> getCircuitSwitchesByWorld(String worldName);
 	public void writeCircuitSwitch(CircuitSwitch circuitSwitch);
+	public void deleteCircuitSwitch(CircuitSwitch circuitSwitch);
+	public Set<CircuitSwitch> getAllCircuitSwitches();
 }

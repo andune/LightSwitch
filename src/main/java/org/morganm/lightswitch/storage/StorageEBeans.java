@@ -144,10 +144,6 @@ public class StorageEBeans implements Storage {
 		return query.findSet();	
 	}
 	
-	public Set<Circuit> getAllCircuits() {
-		return plugin.getDatabase().find(Circuit.class).findSet();
-	}
-	
 	@Override
 	public void writeCircuit(Circuit circuit) {
 		plugin.getDatabase().save(circuit);
@@ -172,5 +168,35 @@ public class StorageEBeans implements Storage {
 	public void purgeCache() {
 		// in theory we should pass this call through to the EBEAN server, but it doesn't
 		// offer any support for this functionality.  So we do nothing.
+	}
+
+	@Override
+	public void deleteCircuit(Circuit circuit) {
+		plugin.getDatabase().delete(circuit);
+	}
+
+	@Override
+	public void deleteCircuitEntity(CircuitEntity circuitEntity) {
+		plugin.getDatabase().delete(circuitEntity);
+	}
+
+	@Override
+	public void deleteCircuitSwitch(CircuitSwitch circuitSwitch) {
+		plugin.getDatabase().delete(circuitSwitch);
+	}
+
+	@Override
+	public Set<Circuit> getAllCircuits() {
+		return plugin.getDatabase().find(Circuit.class).findSet();
+	}
+	
+	@Override
+	public Set<CircuitEntity> getAllCircuitEntities() {
+		return plugin.getDatabase().find(CircuitEntity.class).findSet();
+	}
+
+	@Override
+	public Set<CircuitSwitch> getAllCircuitSwitches() {
+		return plugin.getDatabase().find(CircuitSwitch.class).findSet();
 	}
 }

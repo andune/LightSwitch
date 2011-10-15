@@ -17,7 +17,7 @@ public class StorageFactory {
 		throws StorageException, IOException
 	{
 		if ( storageType == STORAGE_TYPE_EBEANS ) {
-			return new StorageEBeans(plugin);
+			return new StorageCache(new StorageEBeans(plugin), plugin.getLocationMap());
 		}
 		else {
 			throw new StorageException("Unable to create Storage interface, invalid type given: "+storageType);

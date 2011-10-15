@@ -4,13 +4,13 @@
 package org.morganm.lightswitch;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
-
-import javax.media.j3d.Material;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.block.CraftSign;
+import org.bukkit.entity.Player;
 import org.morganm.lightswitch.entity.Circuit;
 import org.morganm.lightswitch.entity.CircuitEntity;
 import org.morganm.lightswitch.entity.CircuitSwitch;
@@ -21,10 +21,41 @@ import org.morganm.lightswitch.entity.CircuitSwitch;
  */
 public class LightSwitchManager {
 	private LightSwitchPlugin plugin;
-	private HashMap<Location, CircuitSwitch> circuitSwitches;
+	//private HashMap<Location, CircuitSwitch> circuitSwitches;
+//	private ArrayList<Player> playersInSwitchMode = new ArrayList<Player>();
+	// keep track of which Circuit a player is working on as they are defining circuit objects
+	private HashMap<Player, Circuit> activePlayerCircuit = new HashMap<Player, Circuit>();
+	private HashSet<Player> playersInDeleteMode = new HashSet<Player>();
 	
 	public LightSwitchManager(LightSwitchPlugin plugin) {
 		this.plugin = plugin;
+	}
+	
+	public boolean isInActiveCircuitMode(Player p) {
+		return activePlayerCircuit.containsKey(p);
+//		return playersInSwitchMode.contains(p);
+	}
+	public boolean isInDeleteCircuitMode(Player p) {
+		return playersInDeleteMode.contains(p);
+	}
+	
+	public void setDeleteMode(Player p) {
+		playersInDeleteMode.add(p);
+		clearActiveCircuit(p);		// can't be in active circuit mode at the same time
+	}
+	public void clearDeleteMode(Player p) {
+		playersInDeleteMode.remove(p);
+	}
+	
+	public void setActiveCircuit(Player p, Circuit circuit) {
+		activePlayerCircuit.put(p, circuit);
+		clearDeleteMode(p);			// can't be in delete mode at the same time
+	}
+	public Circuit getActiveCircuit(Player p) {
+		return activePlayerCircuit.get(p);
+	}
+	public void clearActiveCircuit(Player p) {
+		activePlayerCircuit.remove(p);
 	}
 	
 	/** Return the circuit associated with a given sign.
@@ -75,6 +106,20 @@ public class LightSwitchManager {
 		}
 		
 		return newType;
+	}
+	
+	public boolean isValidEntityType(int typeId) {
+		switch(typeId) {
+		default:
+			return false;
+		}
+	}
+	
+	public boolean isValidSwitchType(int typeId) {
+		switch(typeId) {
+		default:
+			return false;
+		}
 	}
 	
 	public boolean getOnState(int typeId) {
@@ -136,5 +181,70 @@ public class LightSwitchManager {
 			}
 		}
 		return nearestSwitch;
+	}
+	
+	public CircuitSwitch getCircuitSwitchByLocation(Location l) {
+		return plugin.getStorage().getCircuitSwitchByLocation(l);
+	}
+	
+	public boolean isInNoSpawnZone(Location l) {
+		// TODO: do something intelligent here
+		// possible implementation should use WorldEdit Cuboid objects to define zones
+		
+		return false;
+	}
+	
+	/** Method to determine if a new object placed at a given location would expand
+	 * an existing NoSpawn zone.
+	 * 
+	 * @param l
+	 * @return
+	 */
+	public boolean wouldExpandNoSpawnZone(Location l) {
+		// TODO: do something
+		return false;
+	}
+	
+	/** Determine if a given location has a circuit object associated with it.
+	 * 
+	 * @param l
+	 * @return
+	 */
+	public boolean isCircuitLocation(Location l) {
+		return plugin.getLocationMap().get(l) != null;
+	}
+	
+	/** If a given location is protected, return it's owner.
+	 * 
+	 * @param l
+	 * @return a string indicating the playerName that owns that protection, null if the block is not protected
+	 */
+	/*
+	public String getProtectedOwner(Location l) {
+		return null;
+	}
+	*/
+	
+	/** Given a location, find any associated entity object with that location and delete it.
+	 * 
+	 * @param l
+	 * @return true if a Circuit entity was found and deleted, false if none was found
+	 */
+	public boolean deleteEntity(Location l) {
+		boolean ret = false;
+		Object o = plugin.getLocationMap().get(l);
+		
+		if( o != null ) {
+			if( o instanceof CircuitSwitch ) {
+				plugin.getStorage().deleteCircuitSwitch((CircuitSwitch) o);
+				ret = true;
+			}
+			else if( o instanceof CircuitEntity ) {
+				plugin.getStorage().deleteCircuitEntity((CircuitEntity) o);
+				ret = true;
+			}
+		}
+		
+		return ret;
 	}
 }

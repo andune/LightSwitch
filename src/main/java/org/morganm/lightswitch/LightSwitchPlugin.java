@@ -5,10 +5,13 @@ package org.morganm.lightswitch;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -43,6 +46,12 @@ public class LightSwitchPlugin extends JavaPlugin implements JavaConfigPlugin, J
 	private Config config;
     private PermissionHandler permissionHandler;
     private Storage storage;
+    private LightSwitchManager lightSwitchManager;
+    
+    /* Hashmap which contains all entities we track that are associated with a physical
+     * location. This map is managed by the Storage facility as objects are changing.
+     */
+	private final HashMap<Location, Object> locationMap = new HashMap<Location, Object>();
 	
     public static LightSwitchPlugin getInstance() {
     	return instance;
@@ -73,6 +82,8 @@ public class LightSwitchPlugin extends JavaPlugin implements JavaConfigPlugin, J
     		shutdownPlugin();
     		return;
     	}
+    	
+    	lightSwitchManager = new LightSwitchManager(this);
     	
 //        getServer().getPluginManager().registerEvent(Event.Type.BLOCK_BREAK, blockListener, Priority.Monitor, this);
         
@@ -174,6 +185,8 @@ public class LightSwitchPlugin extends JavaPlugin implements JavaConfigPlugin, J
         return classList;
     }
     
+    public LightSwitchManager getManager() { return lightSwitchManager; }
+    
 	public Config getConfig() { return config; }
 	
 	public File getJarFile() {
@@ -199,4 +212,7 @@ public class LightSwitchPlugin extends JavaPlugin implements JavaConfigPlugin, J
 	public Storage getStorage() {
 		return storage;
 	}
+	
+	@Override
+	public Map<Location, Object> getLocationMap() { return locationMap; }
 }

@@ -3,6 +3,9 @@
  */
 package org.morganm.lightswitch.storage;
 
+import java.util.Map;
+
+import org.bukkit.Location;
 import org.morganm.lightswitch.config.JavaConfigPlugin;
 
 import com.avaje.ebean.EbeanServer;
@@ -27,4 +30,6 @@ public interface JavaStoragePlugin extends JavaConfigPlugin {
 	public EbeanServer getDatabase();
 	
 	public Storage getStorage();
+
+	public Map<Location, Object> getLocationMap();
 }
